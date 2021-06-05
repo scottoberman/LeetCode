@@ -12,6 +12,7 @@ namespace Prob1883
         int[] dist;
         int speed;
         int hoursBefore;
+        Queue<bool[]> rowsToCheck;
 
         public int MinSkips(int[] dist, int speed, int hoursBefore)
         {
@@ -19,6 +20,7 @@ namespace Prob1883
             this.dist = dist;
             this.hoursBefore = hoursBefore;
             this.speed = speed;
+            rowsToCheck = new Queue<bool[]>();
             bool[] initSkip = Enumerable.Repeat(false, dist.Length).ToArray();
             bool[] endSkip  = Enumerable.Repeat(true, dist.Length).ToArray();
 
@@ -43,29 +45,39 @@ namespace Prob1883
         {
             int numChildren = dist.Length - depthCur - distInd;
             bool[][] children = new bool[numChildren][];
-            // Generate children and check that child
-            // to see if it fullfills our time requiremnts.
             for (int x = 0; x < numChildren; x++)
             {
                 children[x] = new bool[dist.Length];
                 curSkipsCheck.CopyTo(children[x], 0);
-
-                int curSkipTracker = (curNodeNum) % dist.Length;
-                while (children[x][curSkipTracker])
-                {
-                    curSkipTracker = (curSkipTracker + 1) % dist.Length;
-                }
-
-                children[x][curSkipTracker] = true;
-
-                if(CheckNode(children[x]))
-                    return children[x];
             }
+            // Generate children and check that child
+            // to see if it fullfills our time requiremnts.
+            int curSkipTracker = (curNodeNum) % dist.Length;
+
+                for (int x = 0; x < numChildren; x++)
+                {
+
+                    //CopyToShorterArray(curSkipsCheck, ref children[x]);
+
+                    while (children[x][curSkipTracker])
+                    {
+                        curSkipTracker = (curSkipTracker + 1) % dist.Length;
+                    }
+
+                    children[x][curSkipTracker] = true;
+
+                    if(CheckNode(children[x]))
+                        return children[x];
+
+                    curSkipTracker++;
+                }
 
             // Explore children
             for (int x = 0; x < numChildren - 1; x++)
             {
-                bool[] childSuccess = CheckRow(depthCur + 1, curNodeNum + x, distInd + 1, children[x]);
+                // TODO NEXT TIME: Supposed to be doing a BFS but kind of mixing things
+                // around. Instead need to use rowsToCheck and check the things in there as appropriate.
+                bool[] childSuccess = CheckRow(depthCur + 1, curNodeNum + x, distInd, children[x]);
                 if (childSuccess != null)
                     return children[x];
             }
@@ -84,6 +96,12 @@ namespace Prob1883
             }
 
             return timeTotal <= this.hoursBefore;
+        }
+
+        private void CopyToShorterArray(bool[] arrayIn, ref bool[] arrayOut)
+        {
+            for(int x = 0; x < arrayOut.Length; x++)
+                arrayOut[x] = arrayIn[x];
         }
     }
 
