@@ -1,7 +1,5 @@
-import time
-
 class Window:
-    def __init__(self) -> None:
+    def __init__(self):
         self.width = 1
         self.index = 0
 class Solution(object):
@@ -16,8 +14,7 @@ class Solution(object):
 
         wind = Window
 
-        wind.width = 1
-        wind.index = 0
+
         longPal = ""
         lenS = len(self.s)
         palInCurWindow = False
@@ -28,37 +25,46 @@ class Solution(object):
         # 3. else move window index over one
         # 4. terminate once window size becomes greater than string size
 
-        while len(longPal) + wind.index < lenS:
-            if wind.width > len(longPal) and self.isPalindrome(s, wind):
-                longPal = self.s[wind.index: wind.index + wind.width]
+        longPal = self.s[0]
+        wind.width = 1
+        wind.index = 0
 
 
-            if wind.index + wind.width < lenS:
+
+        while wind.width + wind.index <= lenS:
+            if self.isPalindrome(s, wind):
                 wind.width += 1
+                longPal = self.s[wind.index: wind.index + wind.width - 1]
+                print(f"Long pal found {longPal}")
 
+            elif wind.index + wind.width < lenS:
+                wind.width += 1
             else:
                 wind.index += 1
-                wind.width = len(longPal)
-
+                wind.width = len(longPal) + 1
 
         return longPal
 
     def isPalindrome(self, s, wind):
         upperBound = wind.index + wind.width - 1
         for x in range(wind.index, upperBound):
-            if s[x] != s[upperBound - x]:
+            if s[x] != s[upperBound - (x - wind.index)]:
                 return False
         return True
 
+import time
 
 def Test():
     timeStart = time.time()
     sol = Solution()
-    #print("Longest palindrome: " + sol.longestPalindrome("asdf"))
-    print("Longest palindrome: " + sol.longestPalindrome("aassaa"))
-    print("Longest palindrome: " + sol.longestPalindrome("aassaaddddddddddddddddddddd"))
-    print("Longest palindrome: " + sol.longestPalindrome("babad"))
-    print("Longest palindrome: " + sol.longestPalindrome("zzzzxsaiowdjkjsdbfijasherjbasdfnasouierhaiwlefhasdofu9a8whriu3n908sdhvniw3nc08a8wnenfiauswuer09u34wkjfjsd09fuj2ij3 f90sdgjij32wnf09wrhgiun3098r34ntkjsdjg09sejrtiusje09tjdfgjjs0ed9rgu0s9drgzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzxsaiowdjkjsdbfijasherjbasdfnasouierhaiwlefhasdofu9a8whriu3n908sdhvniw3nc08a8wnenfiauswuer09u34wkjfjsd09fuj2ij3 f90sdgjij32wnf09wrhgiun3098r34ntkjsdjg09sejrtiusje09tjdfgjjs0ed9rgu0s9drgzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzxsaiowdjkjsdbfijasherjbasdfnasouierhaiwlefhasdofu9a8whriu3n908sdhvniw3nc08a8wnenfiauswuer09u34wkjfjsd09fuj2ij3 f90sdgjij32wnf09wrhgiun3098r34ntkjsdjg09sejrtiusje09tjdfgjjs0ed9rgu0s9drgzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzxsaiowdjkjsdbfijasherjbasdfnasouierhaiwlefhasdofu9a8whriu3n908sdhvniw3nc08a8wnenfiauswuer09u34wkjfjsd09fuj2ij3 f90sdgjij32wnf09wrhgiun3098r34ntkjsdjg09sejrtiusje09tjdfgjjs0ed9rgu0s9drgzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"))
+    # print("Longest palindrome: " + sol.longestPalindrome("asdf"))
+    # print("Longest palindrome: " + sol.longestPalindrome("aassaa"))
+    # print("Longest palindrome: " + sol.longestPalindrome("aassaaddddddddddddddddddddd"))
+    # print("Longest palindrome: " + sol.longestPalindrome("babad"))
+    #print("Longest palindrome: " + sol.longestPalindrome("zzzzxzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzxsaiowdjkjsdbfijasherjbasdfnasouierhaiwlefhasdofu9a8whriu3n908sdhvniw3nc08a8wnenfiauswuer09u34wkjfjsd09fuj2ij3 f90sdgjij32wnf09wrhgiun3098r34ntkjsdjg09sejrtiusje09tjdfgjjs0ed9rgu0s9drgzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzxsaiowdjkjsdbfijasherjbasdfnasouierhaiwlefhasdofu9a8whriu3n908sdhvniw3nc08a8wnenfiauswuer09u34wkjfjsd09fuj2ij3 f90sdgjij32wnf09wrhgiun3098r34ntkjsdjg09sejrtiusje09tjdfgjjs0ed9rgu0s9drgzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzxsaiowdjkjsdbfijasherjbasdfnasouierhaiwlefhasdofu9a8whriu3n908sdhvniw3nc08a8wnenfiauswuer09u34wkjfjsd09fuj2ij3 f90sdgjij32wnf09wrhgiun3098r34ntkjsdjg09sejrtiusje09tjdfgjjs0ed9rgu0s9drgzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"))
+    
 
-
+    print("Longest palindrome: " + sol.longestPalindrome("dqmvxouqesajlmksdawfenyaqtnnfhmqbdcniynwhuywucbjzqxhofdzvposbegkvqqrdehxzgikgtibimupumaetjknrjjuygxvncvjlahdbibatmlobctclgbmihiphshfpymgtmpeneldeygmzlpkwzouvwvqkunihmzzzrqodtepgtnljribmqneumbzusgppodmqdvxjhqwqcztcuoqlqenvuuvgxljcnwqfnvilgqrkibuehactsxphxkiwnubszjflvvuhyfwmkgkmlhmvhygncrtcttioxndbszxsyettklotadmudcybhamlcjhjpsmfvvchduxjngoajclmkxiugdtryzinivuuwlkejcgrscldgmwujfygqrximksecmfzathdytauogffxcmfjsczaxnfzvqmylujfevjwuwwaqwtcllrilyncmkjdztleictdebpkzcdilgdmzmvcllnmuwpqxqjmyoageisiaeknbwzxxezfbfejdfausfproowsyyberhiznfmrtzqtgjkyhutieyqgrzlcfvfvxawbcdaawbeqmzjrnbidnzuxfwnfiqspjtrszetubnjbznnjfjxfwtzhzejahravwmkakqsmuynklmeffangwicghckrcjwtusfpdyxxqqmfcxeurnsrmqyameuvouqspahkvouhsjqvimznbkvmtqqzpqzyqivsmznnyoauezmrgvproomvqiuzjolejptuwbdzwalfcmweqqmvdhejguwlmvkaydjrjkijtrkdezbipxoccicygmmibflxdeoxvudzeobyyrutbcydusjhmlwnfncahxgswxiupgxgvktwkdxumqp"))
+    timeRun = time.time() - timeStart
+    print(f"Running time: {timeRun}")
 Test()
