@@ -15,7 +15,7 @@ class Solution(object):
             return answer
 
         for curChar in range(len(s)):
-            if curCol % (numRows - 1) == 0:
+            if numRows == 1 or curCol % (numRows - 1) == 0:
                 rowStrs[curRow] += (s[curChar])
                 curRow = (curRow + 1) % numRows
 
@@ -47,15 +47,16 @@ def Test():
 
     numRows = 5
     s = "a"
-    rowStrs = testy.convert("a", numRows)
+    rowStrs = testy.convert(s, numRows)
 
     numRows = 2
     s = "a"
-    rowStrs = testy.convert("a", numRows)
+    rowStrs = testy.convert(s, numRows)
 
     numRows = 1
-    s = "a"
-    rowStrs = testy.convert("a", numRows)
+    s = "abaaaaaaaaaaa"
+    rowStrs = testy.convert(s, numRows)
+
 
     testy.printSol(rowStrs, numRows)
 
