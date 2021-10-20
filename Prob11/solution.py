@@ -6,29 +6,27 @@
 
 # Notice that you may not slant the container.
 
-from dataclasses import dataclass
-
-@dataclass
-class HeightInfo:
-    height: int
-    pos: int
-
 class Solution:
     def maxArea(self, height) -> int:
 
+        leftX = 0
+        rightX = len(height) - 1
+
         aMax = 0
 
-        for index1 in range(len(height) - 1):
-            for index2 in range(index1, len(height)):
-                leftX = index1
-                leftY = height[index1]
+        while leftX != rightX:
+            leftY = height[leftX]
 
-                rightX = index2
-                rightY = height[index2]
+            rightY = height[rightX]
 
-                area =  (rightX - leftX) * (min(rightY, leftY))
+            area = (rightX - leftX) * min(rightY, leftY)
 
-                aMax = max(aMax, area)
+            if rightY > leftY:
+                leftX += 1
+            else:
+                rightX -= 1
+
+            aMax = max(area, aMax)
 
         return aMax
 
