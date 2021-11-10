@@ -26,8 +26,7 @@ class Solution:
                     curMin = price
 
         return maxProfit
-    
-# 5, 3, 2, 1, 0, -1, -2, -3
+
 def Testing():
     sol = Solution()
     print(sol.maxProfit([3, 5, 7, 9, 11, 3, 4, 5]))
