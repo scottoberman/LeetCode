@@ -9,29 +9,34 @@ class Solution:
         
         depth = 0
         index = 0
+        sumSoFar = self.__sums[0]
         
         self.__freqsExpected = freqsInit(self.__sums)
         
-        self.recurSearch(depth, index, freqsInit(self.__sums))
+        return self.recurSearch(depth, index,sumSoFar, freqsInit(self.__sums))
         
         
-    def recurSearch(self, depth, index, freqs):
-        sumFound = False
-        if depth == self.__depthTarget:
-            return freqs == self.__freqsExpected
-        else:
-            # Short circuit a failure if the number is
-            # not in numbers / has been removed.
-            if not self.__sums[index] in freqs:
-                return False
-            else:
-                freqsNew = freqsInit(freqs)
-                freqsRemove(self.__sums[index], freqsNew)
-                depth += 1
-                while not sumFound and \
-                depth + index < len(self.__sums) - self.__depthTarget:
-                    index += 1
-                    sumFound = self.recurSearch(depth, index, freqsNew)
+    def recurSearch(self, depth, index, sumSoFar, freqs):
+        sumFound = True
+        
+
+        # Short circuit a failure if the number is
+        # not in numbers / has been removed.
+        freqsNew = freqsInit(freqs)
+        freqsRemove(sumSoFar, freqsNew)
+        if len(freqsNew) == 0:
+            return True
+        elif sumSoFar in freqsNew:
+            return False
+        
+        while sumFound and \
+        depth + 1 + index + 1 < len(self.__sums) - self.__depthTarget:
+            index += 1
+            depth += 1
+            sumFound = self.recurSearch(depth, index, sumSoFar, freqsNew)
+            
+        return sumFound
+                
 
 # Create dictionary of frequencies
 def freqsInit(freqsOld):
@@ -54,6 +59,8 @@ def freqsInsert(val, freqs):
 def freqsRemove(val, freqs):
     if val in freqs:
         freqs[val] -= 1
+        if freqs[val] == 0:
+            freqs.pop(val)
     else:
         # In our case, this sort of thing should be caught
         # before attempting a removal.
