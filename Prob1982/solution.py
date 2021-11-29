@@ -7,35 +7,49 @@ class Solution:
         self.__depthTarget = n - 1
         self.__sums = sums
         
-        depth = 0
-        index = 0
+        depth = -1
+        index = -1
         sumSoFar = self.__sums[0]
         
         self.__freqsExpected = freqsInit(self.__sums)
+        potentialSol = []
+
+        self.recurSearch(depth, index,sumSoFar, freqsInit(self.__sums), potentialSol)
         
-        return self.recurSearch(depth, index,sumSoFar, freqsInit(self.__sums))
+        return potentialSol
         
         
-    def recurSearch(self, depth, index, sumSoFar, freqs):
-        sumFound = True
+    def recurSearch(self, depth, index, sumSoFar, freqs, potentialSol):
+        haltSearch = False
         
+        # Initial case (empty set)
+        if index == -1:
+            sumSoFar = 0
 
         # Short circuit a failure if the number is
         # not in numbers / has been removed.
-        freqsNew = freqsInit(freqs)
-        freqsRemove(sumSoFar, freqsNew)
-        if len(freqsNew) == 0:
-            return True
-        elif sumSoFar in freqsNew:
+        freqsNew = dict(freqs)
+        if sumSoFar in freqsNew:
+            freqsRemove(sumSoFar, freqsNew)
+            if depth == self.__depthTarget:
+                # Potential solution?
+                return True
+            elif len(freqsNew) == 0:
+                assert(False)
+                # Not sure what this case entails
+                return False
+        else:
             return False
-        
-        while sumFound and \
-        depth + 1 + index + 1 < len(self.__sums) - self.__depthTarget:
-            index += 1
-            depth += 1
-            sumFound = self.recurSearch(depth, index, sumSoFar, freqsNew)
             
-        return sumFound
+        while (not haltSearch) and \
+        index + 1 < len(self.__sums):
+            index += 1
+            potentialSol.append(self.__sums[index])
+            haltSearch = self.recurSearch(depth + 1, index, sumSoFar + self.__sums[index], freqsNew, potentialSol)
+            if not haltSearch:
+                potentialSol.pop()
+            
+        return haltSearch
                 
 
 # Create dictionary of frequencies
@@ -71,5 +85,13 @@ def test():
     
     res = sol.recoverArray(3, [-3,-2,-1,0,0,1,2,3])
     print(res)
-                
+
+    res = sol.recoverArray(2, [0,0,0,0])
+    print(res)
+
+    res = sol.recoverArray(4, [0,0,5,5,4,-1,4,9,9,-1,4,3,4,8,3,8])
+    print(res)
+
+    res = sol.recoverArray(1, [0, 9])
+    print(res)
 test()
